@@ -24,6 +24,9 @@ class Renderer
 
     /** @var array */
     private $data;
+    
+    /** @var String */
+    private $returnString = 'EZ_RETURN';
 
     /**
      * Loads the template ODT file
@@ -81,7 +84,7 @@ class Renderer
                 $doc = new DOMDocument();
                 $doc->loadXML($fileContent);
                 $this->createTraverser($doc)->traverse();
-                $this->target->addFromString($fileName, $doc->saveXML());
+                $this->target->addFromString($fileName, str_replace($this->returnString, '</text:p><text:p text:style-name="P17">', $doc->saveXML()));
             }
         }
 

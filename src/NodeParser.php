@@ -17,7 +17,7 @@ class NodeParser
     public function __construct()
     {
         $this->expressionPattern = sprintf(
-            '/%s\S+%s/i',
+            '/%s.*?%s/i',
             preg_quote(self::LEFT_DELIMITER),
             preg_quote(self::RIGHT_DELIMITER)
         );
