@@ -47,10 +47,23 @@ class NodeParser
     {
         $search  = [];
         $replace = [];
+
         foreach ($tokens as $key => $value) {
-            $search[]  = self::LEFT_DELIMITER . $key . self::RIGHT_DELIMITER;
-            $replace[] = $value;
+            if (strpos($value, PHP_EOL) !== false) {
+                $paragraphs = explode(PHP_EOL, $value);
+
+                foreach ($paragraphs as $paragraph) {
+                    $clone = $node->parentNode->cloneNode(true);
+                    $clone->nodeValue = $paragraph;
+
+                    $node->parentNode->parentNode->insertBefore($clone, $node->parentNode);
+                }
+            } else {
+                $search[] = self::LEFT_DELIMITER . $key . self::RIGHT_DELIMITER;
+                $replace[] = $value;
+            }
         }
+
         $node->nodeValue = str_replace($search, $replace, $node->nodeValue);
     }
 }
